@@ -184,7 +184,6 @@
     <Content Include="css\bootstrap-theme.min.css" />
     <Content Include="css\bootstrap.css" />
     <Content Include="css\bootstrap.min.css" />
-    <Content Include="css\lobibox.min.css" />
     <Content Include="css\simple-sidebar.css" />
     <Content Include="css\helper.css" />
     <Content Include="favicon.ico" />
