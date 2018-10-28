@@ -4,17 +4,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
-
-<!-- Sidebar -->
 @Html.Partial("Partials/MenuPartial", Model.projects)
-<!-- /#sidebar-wrapper -->
-<!-- Page Content -->
 <div id="page-content-wrapper">
     <div class="container-fluid">
-
-
-
-
         @if (!Model.projects.Where(w => w.Selected).Any())
         {
             <a href="#menu-toggle"  class="btn btn-secondary" id="menu-toggle">Проекты: не выбран</a>
@@ -39,15 +31,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-<!-- /#page-content-wrapper -->
-
-
-<script type="text/javascript" src="/vendor/jquery/jquery.scrollstop.min.js"></script>
-<script type="text/javascript" src="/js/helper.js"></script>
-<link rel="stylesheet" type="text/css" href="/css/helper.css" />

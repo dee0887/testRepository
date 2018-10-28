@@ -10,14 +10,10 @@
                 создал pull-request <a href="@pul.PullRequestUrl">#@pul.PullRequestNumber</a>
                 <span class="pull-request-date"> @pul.PullRequestDate</span>
             </div>
-
-
             <div>
                 <span class="border-bottom">Активность</span>
-
                 @foreach (var act in pul.Actives)
                 {
-
                     <div class="row ustify-content-start border-bottom activities ">
                         <div class="col-3 ">
                             <span class="badge badge-secondary">@act.Action</span>
@@ -25,20 +21,11 @@
                             <a href="mailto:@pul.Author.Email">@act.Author.Name</a>
                             <span class="badge badge-light">@act.Date</span>
                         </div>
-
-
                         <div class="col-8 offset-1">
                             @act.GetAttachmentUrl()
-
                         </div>
-
                     </div>
-
-
                 }
-
-
-
             </div>
         </div>
     }
