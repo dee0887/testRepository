@@ -3,15 +3,27 @@
 {
     foreach (var pul in Model)
     {
-        <div class="border border-secondary rounded pull-request" >
+        <div class="border border-secondary rounded pull-request">
             <div class="border-bottom">
-                <img class="avatar" src="@(BootstrapSite4.Controllers.HomeController.BitbucketUri + "/users/"+pul.Author.Slug+"/avatar.png")" >
+                <img class="avatar" src="@(BootstrapSite4.Controllers.HomeController.BitbucketUri + "/users/"+pul.Author.Slug+"/avatar.png")">
                 <a href="mailto:@pul.Author.Email">@pul.Author.Name</a>
                 создал pull-request <a href="@pul.PullRequestUrl">#@pul.PullRequestNumber</a>
                 <span class="pull-request-date"> @pul.PullRequestDate</span>
             </div>
+            @if (!string.IsNullOrWhiteSpace(pul.Description))
+            {
+                <div class="border border-light rounded bg-light" style="margin:10px;padding:10px;">
+                    @pul.Description
+                </div>
+            }
+            @if (pul.IsAttachment())
+            {
+                <div style="margin:10px;padding:10px;">
+                    @pul.GetAttachment()
+                </div>
+            }
             <div>
-                <span class="border-bottom">Активность</span>
+                <span class="border-bottom text-success">Активность</span>
                 @foreach (var act in pul.Actives)
                 {
                     <div class="row ustify-content-start border-bottom activities ">
@@ -22,7 +34,7 @@
                             <span class="badge badge-light">@act.Date</span>
                         </div>
                         <div class="col-8 offset-1">
-                            @act.GetAttachmentUrl()
+                            @act.GetAttachment()
                         </div>
                     </div>
                 }
@@ -30,10 +42,3 @@
         </div>
     }
 }
-else
-{
-    <span id="noMoreItems"></span>
-}
-
-
-

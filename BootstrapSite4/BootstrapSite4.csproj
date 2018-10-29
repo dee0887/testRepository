@@ -161,10 +161,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiModels\Activities.cs" />
-    <Compile Include="ApiModels\Projects .cs" />
-    <Compile Include="ApiModels\PullRequests.cs" />
-    <Compile Include="ApiModels\Repos.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />

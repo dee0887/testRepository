@@ -18,17 +18,31 @@ namespace BootstrapSite4
         public string Link { get; set; }
         public bool Selected { get; set; }
     }
-    public class PullRequestModel
+    public class PullRequestModel : Attachment
     {
+        public PullRequestModel(string key, string slug) : base(key, slug) { }
         public User Author { get; set; }
         public string PullRequestNumber { get; set; }
         public string PullRequestTitle { get; set; }
         public string PullRequestDate { get; set; }
         public string PullRequestUrl { get; set; }
+
         public List<string> Reviewer { get; set; }
         public List<Activities> Actives { get; set; }
-        public List<object> PullRequestContent { get; set; }
         List<User> Reviewers { get; set; }
+        public override HtmlString GetAttachment()
+        {
+            if (!this.IsAttachment())
+                return new HtmlString("");
+            Uri uri = new Uri(string.Format(
+                "{0}/projects/{1}/repos/{2}/attachments{3}",
+                BootstrapSite4.Controllers.HomeController.BitbucketUri,
+                this._key,
+                this._slug,
+                this.Description.Substring(this.Description.IndexOf('/', this.Description.LastIndexOf("attachment:")), this.Description.LastIndexOf(')') - this.Description.IndexOf('/', this.Description.LastIndexOf("attachment:")))
+               ));
+            return new HtmlString(string.Format("    <img style=\"max-width:auto;  max-height:auto;  \" class=\" \" src=\"{0}\" >", uri));
+        }
     }
     public class User
     {
@@ -36,36 +50,44 @@ namespace BootstrapSite4
         public string Email { get; set; }
         public string Slug { get; set; }
     }
-    public class Activities
+    public class Activities : Attachment
     {
-        string _key; string _slug;
-        public Activities(string key, string slug) { this._key = key; this._slug = slug; }
+        public Activities(string key, string slug) : base(key, slug) { }
         public User Author { get; set; }
         public string Action { get; set; }
-        public string Text { get; set; }
+
         public string Date { get; set; }
-        bool IsAttachment()
-        {
-            return this.Text.Contains("attachment:");
-        }
-        string GetCommentHeader()
+
+
+        public override HtmlString GetAttachment()
         {
             if (!this.IsAttachment())
-                return this.Text;
-            return this.Text.Remove(this.Text.LastIndexOf(']') + 1);
-        }
-        public HtmlString GetAttachmentUrl()
-        {
-            if (!this.IsAttachment())
-                return new HtmlString(this.GetCommentHeader());
+                return new HtmlString(this.GetDescriptionFormatted());
             Uri uri = new Uri(string.Format(
                 "{0}/projects/{1}/repos/{2}/attachments{3}",
                 BootstrapSite4.Controllers.HomeController.BitbucketUri,
                 this._key,
                 this._slug,
-                this.Text.Substring(this.Text.IndexOf('/', this.Text.LastIndexOf("attachment:")), this.Text.LastIndexOf(')') - this.Text.IndexOf('/', this.Text.LastIndexOf("attachment:")))
+                this.Description.Substring(this.Description.IndexOf('/', this.Description.LastIndexOf("attachment:")), this.Description.LastIndexOf(')') - this.Description.IndexOf('/', this.Description.LastIndexOf("attachment:")))
                ));
-            return new HtmlString(string.Format("<a href=\"{0}\">{1}</a>", uri, this.GetCommentHeader()));
+            return new HtmlString(string.Format("<a href=\"{0}\">{1}</a>", uri, this.GetDescriptionFormatted()));
         }
+    }
+    public abstract class Attachment
+    {
+        protected string _key; protected string _slug;
+        public Attachment(string key, string slug) { this._key = key; this._slug = slug; }
+        public string Description { get; set; }
+        public bool IsAttachment()
+        {
+            return !string.IsNullOrWhiteSpace(this.Description) && this.Description.Contains("attachment:");
+        }
+        protected string GetDescriptionFormatted()
+        {
+            if (!this.IsAttachment())
+                return this.Description;
+            return this.Description.Remove(this.Description.LastIndexOf(']') + 1);
+        }
+        public abstract HtmlString GetAttachment();
     }
 }
