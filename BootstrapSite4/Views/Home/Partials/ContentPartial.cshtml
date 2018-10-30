@@ -1,11 +1,13 @@
-﻿@model List<PullRequestModel>
+﻿@using BootstrapSite4.Model
+@using BootstrapSite4.Helper
+@model List<PullRequestModel>
 @if (Model.Any())
 {
     foreach (var pul in Model)
     {
         <div class="border border-secondary rounded pull-request">
             <div class="border-bottom">
-                <img class="avatar" src="@(BootstrapSite4.Controllers.HomeController.BitbucketUri + "/users/"+pul.Author.Slug+"/avatar.png")">
+                <img class="avatar" src="@pul.Author.GetUserAvatarUrl()">
                 <a href="mailto:@pul.Author.Email">@pul.Author.Name</a>
                 создал pull-request <a href="@pul.PullRequestUrl">#@pul.PullRequestNumber</a>
                 <span class="pull-request-date"> @pul.PullRequestDate</span>
@@ -29,7 +31,7 @@
                     <div class="row ustify-content-start border-bottom activities ">
                         <div class="col-3 ">
                             <span class="badge badge-secondary">@act.Action</span>
-                            <img class="avatar" src="@(BootstrapSite4.Controllers.HomeController.BitbucketUri + "/users/"+pul.Author.Slug+"/avatar.png")">
+                            <img class="avatar" src="@pul.Author.GetUserAvatarUrl()">
                             <a href="mailto:@pul.Author.Email">@act.Author.Name</a>
                             <span class="badge badge-light">@act.Date</span>
                         </div>

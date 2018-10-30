@@ -1,31 +1,32 @@
-﻿@model BootstrapSite4.pageModel
+﻿@using BootstrapSite4.Model
+@model PageModel
 @{
 
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
-@Html.Partial("Partials/MenuPartial", Model.projects)
+@Html.Partial("Partials/MenuPartial", Model.Projects)
 <div id="page-content-wrapper">
     <div class="container-fluid">
-        @if (!Model.projects.Where(w => w.Selected).Any())
+        @if (!Model.IsProjectSelected())
         {
             <a href="#menu-toggle"  class="btn btn-secondary" id="menu-toggle">Проекты: не выбран</a>
         }
         else
         {
-            @Html.Hidden("lazyurl", @Url.Action("lazyload", "Home", new { key = Model.projects.Where(w => w.Selected).First().Key }))
-            <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Проекты: @(Model.projects.Where(w => w.Selected).First().Name)</a>
+            @Html.Hidden("lazyurl", @Url.Action("lazyload", "Home", new { key = Model.GetSelectedProjectKey() }))
+            <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Проекты: @Model.GetSelectedProjectName()</a>
         }
         <div id="pull-requests">
-            @if (Model.pullrequests != null)
+            @if (Model.PullRequests != null)
             {
-                if (!Model.pullrequests.Any())
+                if (!Model.PullRequests.Any())
                 {
                     <h2>Нечего показывать</h2>
                 }
                 else
                 {
-                    @Html.Partial("Partials/ContentPartial", Model.pullrequests)
+                    @Html.Partial("Partials/ContentPartial", Model.PullRequests)
                 }
             }
         </div>
